@@ -1,0 +1,20 @@
+﻿services:
+  - type: web
+    name: klh-peer-learning-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        value: mongodb+srv://<redacted-user>:<redacted-pass>@<redacted-host>/klh-peer-learning?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: <redacted-jwt-secret>
+      - key: JWT_EXPIRES_IN
+        value: 90d
+      - key: FRONTEND_URL
+        value: https://localhost:3000
