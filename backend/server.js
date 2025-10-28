@@ -4,9 +4,25 @@ const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
+
+// Ensure upload directories exist
+const uploadDirs = [
+  path.join(__dirname, 'uploads'),
+  path.join(__dirname, 'uploads/videos'),
+  path.join(__dirname, 'uploads/thumbnails'),
+  path.join(__dirname, 'uploads/transcripts')
+];
+
+uploadDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`📁 Created directory: ${dir}`);
+  }
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -16,13 +32,32 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Middleware
-app.use(helmet());
-app.use(cors());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Serve static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Import routes
+const authRoutes = require('./routes/authRoutes');
+const videoRoutes = require('./routes/videoRoutes');
+const commentRoutes = require('./routes/comments');
+const qaRoutes = require('./routes/qa');
+const chatbotRoutes = require('./routes/chatbot');
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/videos', videoRoutes);
+app.use('/api/comments', commentRoutes);
+app.use('/api/qa', qaRoutes);
+app.use('/api/chatbot', chatbotRoutes);
 
 // Test routes
 app.get('/api/health', (req, res) => {
@@ -30,7 +65,8 @@ app.get('/api/health', (req, res) => {
     status: 'OK', 
     message: 'KLH Peer Learning Backend is running!',
     database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 

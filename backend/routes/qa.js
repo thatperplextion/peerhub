@@ -1,6 +1,6 @@
 const express = require('express');
 const QuestionAnswer = require('../models/QA');
-const auth = require('../middleware/auth');
+const auth = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Get questions for a video
