@@ -56,7 +56,8 @@ const videoSchema = new mongoose.Schema({
   }],
   transcript: {
     text: String,
-    generatedAt: Date
+    generatedAt: Date,
+    method: String
   },
   summary: {
     text: String,
@@ -70,7 +71,8 @@ const videoSchema = new mongoose.Schema({
     type: String,
     enum: ['processing', 'completed', 'failed'],
     default: 'processing'
-  }
+  },
+  processingError: String
 }, {
   timestamps: true
 });
