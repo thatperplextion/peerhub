@@ -1,11 +1,11 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-const Video = require('../models/Video');
-const User = require('../models/User');
-const auth = require('../middleware/auth');
+const Video = require('../models/videoModel');
+const User = require('../models/userModel');
+const auth = require('../middleware/authMiddleware');
 const router = express.Router();
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -38,52 +38,35 @@ const upload = multer({
 // Upload video
 router.post('/upload', auth, upload.single('video'), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No video file uploaded'
+      });
+    }
+
     const { title, description, subject, topic, courseCode, semester, tags } = req.body;
     
-    // Get video duration and create thumbnail
-    const getVideoInfo = () => {
-      return new Promise((resolve, reject) => {
-        ffmpeg.ffprobe(req.file.path, (err, metadata) => {
-          if (err) reject(err);
-          resolve(metadata);
-        });
-      });
-    };
-
-    const createThumbnail = () => {
-      return new Promise((resolve, reject) => {
-        const thumbnailName = `thumbnail-${Date.now()}.jpg`;
-        const thumbnailPath = `uploads/thumbnails/${thumbnailName}`;
-        
-        ffmpeg(req.file.path)
-          .screenshots({
-            timestamps: ['00:00:01'],
-            filename: thumbnailName,
-            folder: 'uploads/thumbnails/',
-            size: '640x360'
-          })
-          .on('end', () => resolve(thumbnailName))
-          .on('error', reject);
-      });
-    };
-
-    const videoInfo = await getVideoInfo();
-    const thumbnail = await createThumbnail();
-    const duration = Math.round(videoInfo.format.duration);
+    // Create default thumbnail (you can replace with actual thumbnail generation)
+    const thumbnailName = `thumbnail-${Date.now()}.jpg`;
+    
+    // For now, use a default duration (in production, you'd extract this from video metadata)
+    const duration = 0; // Will be updated when client provides it or use a library
 
     const video = new Video({
       title,
       description,
       filename: req.file.filename,
-      thumbnail,
-      duration,
+      thumbnail: thumbnailName,
+      duration: duration,
       size: req.file.size,
       uploader: req.user.id,
       subject,
       topic,
       courseCode,
       semester,
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
+      tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
+      processingStatus: 'processing'
     });
 
     await video.save();
@@ -94,7 +77,7 @@ router.post('/upload', auth, upload.single('video'), async (req, res) => {
     });
 
     // Generate transcript and summary in background
-    generateTranscriptAndSummary(video._id, req.file.path);
+    setTimeout(() => generateTranscriptAndSummary(video._id), 1000);
 
     res.status(201).json({
       success: true,
@@ -106,7 +89,7 @@ router.post('/upload', auth, upload.single('video'), async (req, res) => {
     console.error('Upload error:', error);
     res.status(500).json({
       success: false,
-      message: 'Error uploading video'
+      message: 'Error uploading video: ' + error.message
     });
   }
 });
