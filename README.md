@@ -1,8 +1,3 @@
-﻿# KLH Peer Learning Network 🎓
-
-# peer-fusion-
-
-A comprehensive peer-to-peer educational video platform exclusive to KLH University, enabling students and faculty to share, organize, and access educational content with AI-powered features.# peer-fusion-
 
 # peerhub
 
@@ -135,4 +130,5 @@ MIT License
 ---
 
 **Built for KLH University Community** 🎓
+
 
