@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Upload as UploadIcon, FileVideo, Image, X, Tag, BookOpen, Code, CheckCircle } from 'lucide-react';
 
 const UploadPage = () => {
   const navigate = useNavigate();
+
+  // Check if user is logged in
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -107,7 +115,13 @@ const UploadPage = () => {
         navigate('/');
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Upload failed. Please try again.');
+      console.error('Upload error:', err);
+      if (err.response?.status === 401) {
+        setError('Session expired. Please login again.');
+        setTimeout(() => navigate('/login'), 2000);
+      } else {
+        setError(err.response?.data?.message || 'Upload failed. Please try again.');
+      }
       setUploadProgress(0);
     } finally {
       setUploading(false);
