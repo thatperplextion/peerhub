@@ -52,6 +52,26 @@ const commentRoutes = require('./routes/comments');
 const qaRoutes = require('./routes/qa');
 const chatbotRoutes = require('./routes/chatbot');
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: '🎓 KLH PeerHub Backend API',
+    status: 'running',
+    version: '1.0.0',
+    database: mongoose.connection.readyState === 1 ? '✅ Connected' : '❌ Disconnected',
+    frontend: 'http://localhost:3000',
+    endpoints: {
+      auth: '/api/auth (register, login)',
+      videos: '/api/videos',
+      comments: '/api/comments',
+      qa: '/api/qa',
+      chatbot: '/api/chatbot',
+      health: '/api/health'
+    },
+    note: '👉 Visit http://localhost:3000 to access the frontend'
+  });
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/videos', videoRoutes);
