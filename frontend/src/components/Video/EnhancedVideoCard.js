@@ -105,7 +105,7 @@ const EnhancedVideoCard = ({ video, viewMode = 'grid' }) => {
     return (
         <Link to={`/video/${video._id}`}>
             <div 
-                className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:scale-105 border border-gray-100"
+                className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:scale-105 border border-gray-100 hover:animate-float"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
@@ -113,9 +113,9 @@ const EnhancedVideoCard = ({ video, viewMode = 'grid' }) => {
                 <div className="relative h-48 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-500 overflow-hidden">
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-all duration-300">
                         <div className={`bg-white/90 rounded-full p-4 shadow-2xl transition-transform duration-300 ${
-                            isHovered ? 'scale-125 rotate-12' : 'scale-100 rotate-0'
+                            isHovered ? 'scale-125 rotate-12 animate-heartbeat' : 'scale-100 rotate-0'
                         }`}>
-                            <Play className="w-10 h-10 text-blue-600" />
+                            <Play className="w-10 h-10 text-blue-600 animate-pulse" />
                         </div>
                     </div>
                     
@@ -133,8 +133,8 @@ const EnhancedVideoCard = ({ video, viewMode = 'grid' }) => {
 
                     {/* Trending Badge */}
                     {video.views > 100 && (
-                        <div className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-bold flex items-center gap-1">
-                            <TrendingUp className="w-3 h-3" />
+                        <div className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded-lg font-bold flex items-center gap-1 animate-bounce">
+                            <TrendingUp className="w-3 h-3 animate-pulse" />
                             Trending
                         </div>
                     )}
@@ -163,17 +163,17 @@ const EnhancedVideoCard = ({ video, viewMode = 'grid' }) => {
                     {/* Stats */}
                     <div className="flex items-center justify-between text-sm text-gray-500 pt-3 border-t border-gray-100">
                         <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-1">
-                                <Eye className="w-4 h-4" />
+                            <div className="flex items-center gap-1 hover:text-blue-600 transition-colors group">
+                                <Eye className="w-4 h-4 group-hover:animate-wiggle" />
                                 <span className="font-medium">{formatViews(video.views)}</span>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <ThumbsUp className="w-4 h-4" />
+                            <div className="flex items-center gap-1 hover:text-red-600 transition-colors group">
+                                <ThumbsUp className="w-4 h-4 group-hover:animate-heartbeat" />
                                 <span className="font-medium">{video.likes?.length || 0}</span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-1 text-xs">
-                            <Clock className="w-3 h-3" />
+                        <div className="flex items-center gap-1 text-xs group">
+                            <Clock className="w-3 h-3 group-hover:animate-spin-slow" />
                             <span>{getTimeAgo(video.createdAt)}</span>
                         </div>
                     </div>
