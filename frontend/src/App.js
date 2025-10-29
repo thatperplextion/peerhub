@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import EnhancedHome from './pages/EnhancedHome';
+import LoginPage from './pages/LoginPage';
+import Register from './pages/Register';
+import UploadPage from './pages/UploadPage';
+import VideoPlayer from './pages/VideoPlayer';
+import Playlists from './pages/Playlists';
+import Profile from './pages/Profile';
 import './App.css';
 import './enhanced.css';
 
@@ -23,10 +29,12 @@ function App() {
           <Routes>
             <Route path="/" element={<EnhancedHome />} />
             <Route path="/videos" element={<EnhancedHome />} />
-            <Route path="/playlists" element={<div className="p-8 text-center">Playlists page coming soon!</div>} />
-            <Route path="/upload" element={<div className="p-8 text-center">Upload page coming soon!</div>} />
-            <Route path="/login" element={<div className="p-8 text-center">Login page coming soon!</div>} />
-            <Route path="/register" element={<div className="p-8 text-center">Register page coming soon!</div>} />
+            <Route path="/video/:id" element={<VideoPlayer />} />
+            <Route path="/playlists" element={<Playlists />} />
+            <Route path="/upload" element={<UploadPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
       </Router>
