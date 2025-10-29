@@ -46,27 +46,27 @@ const EnhancedHome = () => {
                     
                     {/* Stats */}
                     <div className="flex justify-center gap-8 mt-8 flex-wrap">
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Play className="w-8 h-8 text-blue-600" />
+                                <Play className="w-8 h-8 text-blue-600 group-hover:animate-bounce" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800">{videos.length}</p>
+                            <p className="text-3xl font-bold text-gray-800 animate-pulse">{videos.length}</p>
                             <p className="text-sm text-gray-600">Total Videos</p>
                         </div>
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Eye className="w-8 h-8 text-green-600" />
+                                <Eye className="w-8 h-8 text-green-600 group-hover:animate-wiggle" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800">
+                            <p className="text-3xl font-bold text-gray-800 animate-pulse">
                                 {videos.reduce((acc, v) => acc + (v.views || 0), 0)}
                             </p>
                             <p className="text-sm text-gray-600">Total Views</p>
                         </div>
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300">
+                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Star className="w-8 h-8 text-yellow-600" />
+                                <Star className="w-8 h-8 text-yellow-600 group-hover:animate-spin" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800">
+                            <p className="text-3xl font-bold text-gray-800 animate-pulse">
                                 {videos.reduce((acc, v) => acc + (v.likes?.length || 0), 0)}
                             </p>
                             <p className="text-sm text-gray-600">Total Likes</p>
@@ -80,8 +80,8 @@ const EnhancedHome = () => {
                         {/* Search */}
                         <div className="md:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Search Videos</label>
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <div className="relative group">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 group-hover:animate-jiggle group-focus-within:animate-jiggle" />
                                 <input
                                     type="text"
                                     placeholder="Search by title, topic, or tags..."
@@ -95,8 +95,8 @@ const EnhancedHome = () => {
                         {/* Subject Filter */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                            <div className="relative">
-                                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                            <div className="relative group">
+                                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 group-hover:animate-wiggle group-focus-within:animate-wiggle" />
                                 <select
                                     value={subjectFilter}
                                     onChange={(e) => setSubjectFilter(e.target.value)}
@@ -135,23 +135,23 @@ const EnhancedHome = () => {
                             <span className="text-sm text-gray-600 mr-2">View:</span>
                             <button
                                 onClick={() => setViewMode('grid')}
-                                className={`p-2 rounded-lg transition-all duration-300 ${
+                                className={`p-2 rounded-lg transition-all duration-300 group ${
                                     viewMode === 'grid'
                                         ? 'bg-blue-500 text-white shadow-lg scale-110'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                             >
-                                <Grid className="w-5 h-5" />
+                                <Grid className="w-5 h-5 group-hover:animate-flip" />
                             </button>
                             <button
                                 onClick={() => setViewMode('list')}
-                                className={`p-2 rounded-lg transition-all duration-300 ${
+                                className={`p-2 rounded-lg transition-all duration-300 group ${
                                     viewMode === 'list'
                                         ? 'bg-blue-500 text-white shadow-lg scale-110'
                                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                 }`}
                             >
-                                <List className="w-5 h-5" />
+                                <List className="w-5 h-5 group-hover:animate-flip" />
                             </button>
                         </div>
                     </div>

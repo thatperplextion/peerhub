@@ -35,11 +35,11 @@ const EnhancedNavbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="bg-white p-2 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-md">
-              <GraduationCap className="w-6 h-6 text-blue-600" />
+            <div className="bg-white p-2 rounded-lg group-hover:scale-110 transition-transform duration-300 shadow-md group-hover:animate-wiggle">
+              <GraduationCap className="w-6 h-6 text-blue-600 group-hover:animate-tada" />
             </div>
             <div>
-              <h1 className="text-white font-bold text-xl tracking-tight">KLH PeerHub</h1>
+              <h1 className="text-white font-bold text-xl tracking-tight group-hover:animate-pulse">KLH PeerHub</h1>
               <p className="text-blue-200 text-xs hidden sm:block">Learn Together, Grow Together</p>
             </div>
           </Link>
@@ -52,13 +52,13 @@ const EnhancedNavbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-300 group ${
                     isActive(link.to)
                       ? 'bg-white text-blue-600 shadow-lg scale-105'
                       : 'text-white hover:bg-white/20 hover:scale-105'
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 group-hover:animate-bounce" />
                   <span className="font-medium">{link.label}</span>
                 </Link>
               );
@@ -68,17 +68,17 @@ const EnhancedNavbar = () => {
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Search */}
-            <button className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-300 hover:scale-110">
-              <Search className="w-5 h-5" />
+            <button className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-300 hover:scale-110 group">
+              <Search className="w-5 h-5 group-hover:animate-jiggle" />
             </button>
 
             {/* Notifications */}
             <div className="relative">
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-300 relative hover:scale-110"
+                className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-300 relative hover:scale-110 group"
               >
-                <Bell className="w-5 h-5" />
+                <Bell className="w-5 h-5 group-hover:animate-swing" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
               </button>
             </div>
