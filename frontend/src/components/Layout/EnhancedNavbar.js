@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, Upload, PlaySquare, BookOpen, MessageSquare, 
   User, Settings, LogOut, Bell, Search, Menu, X, GraduationCap
@@ -10,14 +10,27 @@ const EnhancedNavbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
-  // Mock user state - replace with actual auth context
-  const isAuthenticated = false;
-  const user = {
-    name: 'John Doe',
-    email: 'john@klh.edu.in',
-    avatar: null,
-    role: 'student'
+  // Real authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    if (token && userData) {
+      setIsAuthenticated(true);
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+    setUser(null);
+    navigate('/login');
   };
 
   const navLinks = [
@@ -114,7 +127,10 @@ const EnhancedNavbar = () => {
                       <Settings className="w-4 h-4 text-gray-600" />
                       <span className="text-gray-700">Settings</span>
                     </Link>
-                    <button className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-red-50 text-red-600 transition-colors">
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-red-50 text-red-600 transition-colors"
+                    >
                       <LogOut className="w-4 h-4" />
                       <span>Logout</span>
                     </button>
