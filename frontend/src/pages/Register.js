@@ -42,17 +42,35 @@ const Register = () => {
     setLoading(true);
     setError('');
 
+    // Validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long!');
+      setLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match!');
       setLoading(false);
       return;
     }
 
+    if (!formData.department) {
+      setError('Please select a department!');
+      setLoading(false);
+      return;
+    }
+
     try {
-      await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      console.log('Registration successful:', response.data);
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      console.error('Registration error:', err.response?.data);
+      const errorMsg = err.response?.data?.message || 
+                       err.response?.data?.errors?.[0]?.msg ||
+                       'Registration failed. Please try again.';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
