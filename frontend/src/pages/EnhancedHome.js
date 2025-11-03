@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tantml:function_calls';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Grid, List, TrendingUp, Clock, Star, Play, Eye, Sparkles, Trophy, Users, Video as VideoIcon, Rocket, BookMarked } from 'lucide-react';
 import EnhancedVideoCard from '../components/Video/EnhancedVideoCard';
-import EnhancedNavbar from '../components/Layout/EnhancedNavbar';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const EnhancedHome = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -40,61 +40,61 @@ const EnhancedHome = () => {
     const subjects = ['Computer Science', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'Engineering'];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50">
-            <EnhancedNavbar />
+        <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+            <DarkNavbar />
             
             <div className="container mx-auto px-4 py-8">
                 {/* Hero Section */}
                 <div className="text-center mb-12 animate-fade-in">
-                    <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 animate-slide-up">
+                    <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-500 bg-clip-text text-transparent mb-4 animate-slide-up">
                         Welcome to KLH PeerHub
                     </h1>
-                    <p className="text-xl text-gray-600 mb-2">Discover, Learn, and Grow Together</p>
-                    <p className="text-gray-500">Access thousands of educational videos created by students, for students</p>
+                    <p className="text-xl text-gray-700 dark:text-gray-300 mb-2">Discover, Learn, and Grow Together</p>
+                    <p className="text-gray-600 dark:text-gray-400">Access thousands of educational videos created by students, for students</p>
                     
                     {/* Stats */}
                     <div className="flex justify-center gap-8 mt-8 flex-wrap">
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
+                        <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Play className="w-8 h-8 text-blue-600 group-hover:animate-bounce" />
+                                <Play className="w-8 h-8 text-emerald-500 group-hover:animate-bounce" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800 animate-pulse">{videos.length}</p>
-                            <p className="text-sm text-gray-600">Total Videos</p>
+                            <p className="text-3xl font-bold text-gray-900 dark:text-white animate-pulse">{videos.length}</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Total Videos</p>
                         </div>
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
+                        <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Eye className="w-8 h-8 text-green-600 group-hover:animate-wiggle" />
+                                <Eye className="w-8 h-8 text-cyan-500 group-hover:animate-wiggle" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800 animate-pulse">
+                            <p className="text-3xl font-bold text-gray-900 dark:text-white animate-pulse">
                                 {videos.reduce((acc, v) => acc + (v.views || 0), 0)}
                             </p>
-                            <p className="text-sm text-gray-600">Total Views</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Total Views</p>
                         </div>
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
+                        <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Star className="w-8 h-8 text-yellow-600 group-hover:animate-spin" />
+                                <Star className="w-8 h-8 text-yellow-500 group-hover:animate-spin" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800 animate-pulse">
+                            <p className="text-3xl font-bold text-gray-900 dark:text-white animate-pulse">
                                 {videos.reduce((acc, v) => acc + (v.likes?.length || 0), 0)}
                             </p>
-                            <p className="text-sm text-gray-600">Total Likes</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Total Likes</p>
                         </div>
-                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
+                        <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
                             <div className="flex items-center justify-center mb-2">
-                                <Users className="w-8 h-8 text-purple-600 group-hover:animate-bounce" />
+                                <Users className="w-8 h-8 text-purple-500 group-hover:animate-bounce" />
                             </div>
-                            <p className="text-3xl font-bold text-gray-800 animate-pulse">100+</p>
-                            <p className="text-sm text-gray-600">Active Users</p>
+                            <p className="text-3xl font-bold text-gray-900 dark:text-white animate-pulse">100+</p>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">Active Users</p>
                         </div>
                     </div>
 
                     {/* Quick Action Buttons */}
                     <div className="flex justify-center gap-4 mt-8">
-                        <Link to="/upload" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                        <Link to="/upload" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
                             <Rocket className="w-5 h-5 animate-bounce" />
                             Upload Video
                         </Link>
-                        <Link to="/playlists" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                        <Link to="/playlists" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
                             <BookMarked className="w-5 h-5 animate-wiggle" />
                             My Playlists
                         </Link>
@@ -110,10 +110,10 @@ const EnhancedHome = () => {
 
                 {/* Trending Section */}
                 {showTrending && videos.length > 0 && (
-                    <div className="mb-8 bg-gradient-to-r from-orange-100 via-pink-100 to-purple-100 rounded-2xl p-6 shadow-lg">
+                    <div className="mb-8 bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-purple-500/10 dark:from-orange-500/20 dark:via-pink-500/20 dark:to-purple-500/20 rounded-2xl p-6 shadow-lg border border-orange-200 dark:border-orange-800">
                         <div className="flex items-center gap-2 mb-4">
-                            <Sparkles className="w-6 h-6 text-orange-600 animate-pulse" />
-                            <h2 className="text-2xl font-bold text-gray-800">🔥 Trending Now</h2>
+                            <Sparkles className="w-6 h-6 text-orange-500 dark:text-orange-400 animate-pulse" />
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">🔥 Trending Now</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             {videos.slice(0, 3).map((video, index) => (
