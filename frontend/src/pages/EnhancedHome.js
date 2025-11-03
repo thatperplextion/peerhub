@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Search, Filter, Grid, List, TrendingUp, Clock, Star, Play, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, Filter, Grid, List, TrendingUp, Clock, Star, Play, Eye, Sparkles, Trophy, Users, Video as VideoIcon, Rocket, BookMarked } from 'lucide-react';
 import EnhancedVideoCard from '../components/Video/EnhancedVideoCard';
 import EnhancedNavbar from '../components/Layout/EnhancedNavbar';
 
@@ -10,6 +11,7 @@ const EnhancedHome = () => {
     const [subjectFilter, setSubjectFilter] = useState('');
     const [viewMode, setViewMode] = useState('grid');
     const [sortBy, setSortBy] = useState('recent');
+    const [showTrending, setShowTrending] = useState(true);
 
     const { data: videos = [], isLoading, isError } = useQuery({
         queryKey: ['videos', searchTerm, subjectFilter],
@@ -77,8 +79,62 @@ const EnhancedHome = () => {
                             </p>
                             <p className="text-sm text-gray-600">Total Likes</p>
                         </div>
+                        <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition-all duration-300 hover:shadow-2xl group cursor-pointer">
+                            <div className="flex items-center justify-center mb-2">
+                                <Users className="w-8 h-8 text-purple-600 group-hover:animate-bounce" />
+                            </div>
+                            <p className="text-3xl font-bold text-gray-800 animate-pulse">100+</p>
+                            <p className="text-sm text-gray-600">Active Users</p>
+                        </div>
+                    </div>
+
+                    {/* Quick Action Buttons */}
+                    <div className="flex justify-center gap-4 mt-8">
+                        <Link to="/upload" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                            <Rocket className="w-5 h-5 animate-bounce" />
+                            Upload Video
+                        </Link>
+                        <Link to="/playlists" className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                            <BookMarked className="w-5 h-5 animate-wiggle" />
+                            My Playlists
+                        </Link>
+                        <button 
+                            onClick={() => setShowTrending(!showTrending)}
+                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
+                        >
+                            <Trophy className="w-5 h-5 animate-spin-slow" />
+                            {showTrending ? 'Hide' : 'Show'} Trending
+                        </button>
                     </div>
                 </div>
+
+                {/* Trending Section */}
+                {showTrending && videos.length > 0 && (
+                    <div className="mb-8 bg-gradient-to-r from-orange-100 via-pink-100 to-purple-100 rounded-2xl p-6 shadow-lg">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Sparkles className="w-6 h-6 text-orange-600 animate-pulse" />
+                            <h2 className="text-2xl font-bold text-gray-800">🔥 Trending Now</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {videos.slice(0, 3).map((video, index) => (
+                                <Link 
+                                    key={video._id}
+                                    to={`/video/${video._id}`}
+                                    className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all transform hover:scale-105"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="text-3xl font-bold text-orange-500">#{index + 1}</div>
+                                        <div className="flex-1">
+                                            <h3 className="font-bold text-gray-800 line-clamp-1">{video.title}</h3>
+                                            <p className="text-sm text-gray-600">{video.views || 0} views</p>
+                                        </div>
+                                        <TrendingUp className="w-6 h-6 text-green-600 animate-bounce" />
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Search and Filter Bar */}
                 <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 transform hover:shadow-2xl transition-all duration-300">
@@ -214,7 +270,7 @@ const EnhancedHome = () => {
             {/* Footer */}
             <footer className="bg-gradient-to-r from-gray-800 via-gray-900 to-black text-white py-8 mt-20">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-400">© 2024 KLH PeerHub. Built with ❤️ by students, for students.</p>
+                    <p className="text-gray-400">© 2024 KLH PeerHub.</p>
                     <p className="text-gray-500 text-sm mt-2">Empowering collaborative learning at KLH University</p>
                 </div>
             </footer>

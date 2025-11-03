@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Video, PlaySquare, Upload, User, LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';

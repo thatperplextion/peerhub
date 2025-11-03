@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import EnhancedHome from './pages/EnhancedHome';
+import VideosPage from './pages/VideosPage';
 import LoginPage from './pages/LoginPage';
 import Register from './pages/Register';
 import UploadPage from './pages/UploadPage';
@@ -28,7 +29,7 @@ function App() {
         <div className="App min-h-screen">
           <Routes>
             <Route path="/" element={<EnhancedHome />} />
-            <Route path="/videos" element={<EnhancedHome />} />
+            <Route path="/videos" element={<VideosPage />} />
             <Route path="/video/:id" element={<VideoPlayer />} />
             <Route path="/playlists" element={<Playlists />} />
             <Route path="/upload" element={<UploadPage />} />
