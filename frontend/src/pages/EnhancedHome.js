@@ -120,15 +120,15 @@ const EnhancedHome = () => {
                                 <Link 
                                     key={video._id}
                                     to={`/video/${video._id}`}
-                                    className="bg-white rounded-xl p-4 shadow-md hover:shadow-xl transition-all transform hover:scale-105"
+                                    className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-xl p-4 shadow-md hover:shadow-xl transition-all transform hover:scale-105"
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className="text-3xl font-bold text-orange-500">#{index + 1}</div>
                                         <div className="flex-1">
-                                            <h3 className="font-bold text-gray-800 line-clamp-1">{video.title}</h3>
-                                            <p className="text-sm text-gray-600">{video.views || 0} views</p>
+                                            <h3 className="font-bold text-gray-900 dark:text-white line-clamp-1">{video.title}</h3>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400">{video.views || 0} views</p>
                                         </div>
-                                        <TrendingUp className="w-6 h-6 text-green-600 animate-bounce" />
+                                        <TrendingUp className="w-6 h-6 text-green-500 dark:text-green-400 animate-bounce" />
                                     </div>
                                 </Link>
                             ))}
@@ -137,32 +137,32 @@ const EnhancedHome = () => {
                 )}
 
                 {/* Search and Filter Bar */}
-                <div className="bg-white rounded-2xl shadow-xl p-6 mb-8 transform hover:shadow-2xl transition-all duration-300">
+                <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl p-6 mb-8 transform hover:shadow-2xl transition-all duration-300">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         {/* Search */}
                         <div className="md:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Search Videos</label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search Videos</label>
                             <div className="relative group">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 group-hover:animate-jiggle group-focus-within:animate-jiggle" />
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 group-hover:animate-jiggle group-focus-within:animate-jiggle" />
                                 <input
                                     type="text"
                                     placeholder="Search by title, topic, or tags..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1117] text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all duration-300"
                                 />
                             </div>
                         </div>
 
                         {/* Subject Filter */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
                             <div className="relative group">
-                                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 group-hover:animate-wiggle group-focus-within:animate-wiggle" />
+                                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 group-hover:animate-wiggle group-focus-within:animate-wiggle" />
                                 <select
                                     value={subjectFilter}
                                     onChange={(e) => setSubjectFilter(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none transition-all duration-300"
+                                    className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1117] text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent appearance-none transition-all duration-300"
                                 >
                                     <option value="">All Subjects</option>
                                     {subjects.map(subject => (
@@ -174,7 +174,7 @@ const EnhancedHome = () => {
 
                         {/* Sort By */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Sort By</label>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sort By</label>
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
