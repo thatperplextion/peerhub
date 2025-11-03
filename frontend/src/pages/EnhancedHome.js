@@ -19,7 +19,13 @@ const EnhancedHome = () => {
             if (subjectFilter) params.subject = subjectFilter;
 
             try {
-                const response = await axios.get('http://localhost:5000/api/videos', { params });
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5000/api/videos', { 
+                    params,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
                 console.log('Videos fetched:', response.data);
                 return response.data.videos || response.data || [];
             } catch (error) {
