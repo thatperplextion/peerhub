@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tantml:function_calls';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Grid, List, TrendingUp, Clock, Star, Play, Eye, Sparkles, Trophy, Users, Video as VideoIcon, Rocket, BookMarked } from 'lucide-react';
