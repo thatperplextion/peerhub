@@ -178,7 +178,7 @@ const EnhancedHome = () => {
                             <select
                                 value={sortBy}
                                 onChange={(e) => setSortBy(e.target.value)}
-                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none transition-all duration-300"
+                                className="w-full px-4 py-3 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1117] text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent appearance-none transition-all duration-300"
                             >
                                 <option value="recent">Most Recent</option>
                                 <option value="popular">Most Popular</option>
@@ -189,18 +189,18 @@ const EnhancedHome = () => {
                     </div>
 
                     {/* View Mode Toggle */}
-                    <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-                        <p className="text-gray-600">
-                            <span className="font-semibold text-gray-800">{videos.length}</span> videos found
+                    <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <p className="text-gray-600 dark:text-gray-400">
+                            <span className="font-semibold text-gray-900 dark:text-white">{videos.length}</span> videos found
                         </p>
                         <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-600 mr-2">View:</span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">View:</span>
                             <button
                                 onClick={() => setViewMode('grid')}
                                 className={`p-2 rounded-lg transition-all duration-300 group ${
                                     viewMode === 'grid'
-                                        ? 'bg-blue-500 text-white shadow-lg scale-110'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-emerald-500 text-white shadow-lg scale-110'
+                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                                 }`}
                             >
                                 <Grid className="w-5 h-5 group-hover:animate-flip" />
@@ -209,8 +209,8 @@ const EnhancedHome = () => {
                                 onClick={() => setViewMode('list')}
                                 className={`p-2 rounded-lg transition-all duration-300 group ${
                                     viewMode === 'list'
-                                        ? 'bg-blue-500 text-white shadow-lg scale-110'
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                        ? 'bg-emerald-500 text-white shadow-lg scale-110'
+                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                                 }`}
                             >
                                 <List className="w-5 h-5 group-hover:animate-flip" />
@@ -223,21 +223,21 @@ const EnhancedHome = () => {
                 {isLoading ? (
                     <div className="flex items-center justify-center py-20">
                         <div className="relative">
-                            <div className="w-20 h-20 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                            <p className="text-center mt-4 text-gray-600 font-medium">Loading awesome content...</p>
+                            <div className="w-20 h-20 border-4 border-emerald-200 dark:border-emerald-800 border-t-emerald-600 dark:border-t-emerald-400 rounded-full animate-spin"></div>
+                            <p className="text-center mt-4 text-gray-600 dark:text-gray-400 font-medium">Loading awesome content...</p>
                         </div>
                     </div>
                 ) : isError ? (
-                    <div className="bg-red-50 border-2 border-red-200 rounded-xl p-8 text-center">
-                        <div className="text-red-600 text-6xl mb-4">⚠️</div>
-                        <h3 className="text-xl font-bold text-red-800 mb-2">Oops! Something went wrong</h3>
-                        <p className="text-red-600">Unable to load videos. Please try again later.</p>
+                    <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl p-8 text-center">
+                        <div className="text-red-600 dark:text-red-400 text-6xl mb-4">⚠️</div>
+                        <h3 className="text-xl font-bold text-red-800 dark:text-red-300 mb-2">Oops! Something went wrong</h3>
+                        <p className="text-red-600 dark:text-red-400">Unable to load videos. Please try again later.</p>
                     </div>
                 ) : videos.length === 0 ? (
-                    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-12 text-center">
-                        <div className="text-blue-400 text-6xl mb-4">🎥</div>
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2">No videos found</h3>
-                        <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
+                    <div className="bg-gradient-to-br from-emerald-50/50 to-cyan-50/50 dark:from-emerald-900/20 dark:to-cyan-900/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-12 text-center">
+                        <div className="text-emerald-400 text-6xl mb-4">🎥</div>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No videos found</h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">Try adjusting your search or filters</p>
                         <button
                             onClick={() => {
                                 setSearchTerm('');
