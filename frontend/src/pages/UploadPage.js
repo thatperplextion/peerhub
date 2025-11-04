@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Upload as UploadIcon, FileVideo, Image, X, Tag, BookOpen, Code, CheckCircle } from 'lucide-react';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const UploadPage = () => {
   const navigate = useNavigate();
@@ -130,29 +131,34 @@ const UploadPage = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 flex items-center justify-center">
-        <div className="bg-white p-12 rounded-2xl shadow-2xl text-center animate-scale-in">
-          <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4 animate-bounce" />
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">Upload Successful!</h2>
-          <p className="text-gray-600">Your video is being processed...</p>
+      <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+        <DarkNavbar />
+        <div className="flex items-center justify-center py-20">
+          <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 p-12 rounded-2xl shadow-2xl text-center animate-scale-in">
+            <CheckCircle className="w-20 h-20 text-emerald-500 mx-auto mb-4 animate-bounce" />
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Upload Successful!</h2>
+            <p className="text-gray-600 dark:text-gray-400">Your video is being processed...</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white p-10 rounded-2xl shadow-2xl">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-lg animate-bounce">
-                <FileVideo className="w-12 h-12 text-white" />
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+      <DarkNavbar />
+      <div className="container mx-auto py-12 px-4">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 p-10 rounded-2xl shadow-2xl">
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-4">
+                <div className="bg-gradient-to-br from-emerald-500 to-cyan-600 p-4 rounded-2xl shadow-lg animate-bounce">
+                  <FileVideo className="w-12 h-12 text-white" />
+                </div>
               </div>
-            </div>
-            <h2 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Upload Video
-            </h2>
+              <h2 className="text-4xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+                Upload Video
+              </h2>
             <p className="mt-2 text-gray-600">Share your knowledge with the community</p>
           </div>
 
@@ -366,6 +372,7 @@ const UploadPage = () => {
             </button>
           </form>
         </div>
+      </div>
       </div>
     </div>
   );

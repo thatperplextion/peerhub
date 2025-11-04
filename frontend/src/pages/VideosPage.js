@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Search, Filter, Clock, Eye, ThumbsUp, Play, User, Calendar, Tag, TrendingUp, BookOpen, Download, Share2, Bookmark, Grid3x3, List, BarChart3 } from 'lucide-react';
-import EnhancedNavbar from '../components/Layout/EnhancedNavbar';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const VideosPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -59,17 +59,17 @@ const VideosPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <EnhancedNavbar />
+        <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+            <DarkNavbar />
             
             <div className="container mx-auto px-4 py-6">
                 {/* Compact Header */}
                 <div className="mb-6">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-2">
-                        <BookOpen className="w-8 h-8 text-blue-600 animate-pulse" />
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                        <BookOpen className="w-8 h-8 text-emerald-500 animate-pulse" />
                         All Videos
                     </h1>
-                    <p className="text-gray-600">Browse through our entire video library</p>
+                    <p className="text-gray-600 dark:text-gray-400">Browse through our entire video library</p>
                 </div>
 
                 {/* Compact Search and Filter Bar */}
