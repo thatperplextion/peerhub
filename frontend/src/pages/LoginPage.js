@@ -41,42 +41,44 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center py-12 px-4">
-      <div className="max-w-md w-full bg-white p-10 rounded-2xl shadow-2xl animate-scale-in">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-4 rounded-2xl shadow-lg animate-bounce">
-              <GraduationCap className="w-12 h-12 text-white" />
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+      <DarkNavbar />
+      <div className="flex items-center justify-center py-12 px-4">
+        <div className="max-w-md w-full bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 p-10 rounded-2xl shadow-2xl animate-scale-in">
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-br from-emerald-500 to-cyan-600 p-4 rounded-2xl shadow-lg animate-bounce">
+                <GraduationCap className="w-12 h-12 text-white" />
+              </div>
             </div>
+            <h2 className="text-4xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+              Welcome Back!
+            </h2>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Sign in to KLH PeerHub</p>
           </div>
-          <h2 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Welcome Back!
-          </h2>
-          <p className="mt-2 text-gray-600">Sign in to KLH PeerHub</p>
-        </div>
 
-        {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 animate-shake">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-            <div className="relative group">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 group-hover:animate-wiggle" />
-              <input
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full pl-12 pr-3 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="your.email@klh.edu.in"
-              />
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl mb-4 animate-shake">
+              {error}
             </div>
-          </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+              <div className="relative group">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5 group-hover:animate-wiggle" />
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full pl-12 pr-3 py-3 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-[#0d1117] text-gray-900 dark:text-white rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  placeholder="your.email@klh.edu.in"
+                />
+              </div>
+            </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
@@ -129,6 +131,7 @@ const Login = () => {
             </Link>
           </p>
         </form>
+      </div>
       </div>
     </div>
   );

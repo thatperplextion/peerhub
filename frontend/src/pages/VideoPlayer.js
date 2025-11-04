@@ -6,7 +6,7 @@ import {
   Send, X, HelpCircle, CheckCircle, ArrowLeft, Share2, 
   Save, Play, FileText, Clock, TrendingUp, Star 
 } from 'lucide-react';
-import EnhancedNavbar from '../components/Layout/EnhancedNavbar';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const VideoPlayer = () => {
   const { id } = useParams();
@@ -173,10 +173,10 @@ const VideoPlayer = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <EnhancedNavbar />
+      <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+        <DarkNavbar />
         <div className="flex items-center justify-center h-screen">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-emerald-500"></div>
         </div>
       </div>
     );
@@ -184,14 +184,14 @@ const VideoPlayer = () => {
 
   if (error || !video) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <EnhancedNavbar />
+      <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+        <DarkNavbar />
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Video not found</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Video not found</h2>
             <button
               onClick={() => navigate('/')}
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:scale-105 transition-transform"
+              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white rounded-lg hover:scale-105 transition-transform"
             >
               Go Home
             </button>
@@ -202,8 +202,8 @@ const VideoPlayer = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-      <EnhancedNavbar />
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+      <DarkNavbar />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <button
