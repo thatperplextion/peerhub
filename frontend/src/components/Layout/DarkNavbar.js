@@ -192,7 +192,7 @@ const EnhancedNavbar = () => {
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`block py-2 px-3 rounded-lg transition-colors flex items-center space-x-2 ${
+                  className={`flex items-center space-x-2 py-2 px-3 rounded-lg transition-colors ${
                     isActive(link.to)
                       ? 'bg-gray-100 dark:bg-gray-800 text-emerald-600 dark:text-emerald-400'
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
@@ -209,7 +209,7 @@ const EnhancedNavbar = () => {
               <>
                 <Link 
                   to="/profile" 
-                  className="block text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors py-2 px-3 flex items-center space-x-2"
+                  className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors py-2 px-3"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <User size={20} />

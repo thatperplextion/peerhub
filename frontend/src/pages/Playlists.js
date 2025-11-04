@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Play, Video, Trash2, Edit, Lock, Globe, Eye, Clock, Share2 } from 'lucide-react';
-import EnhancedNavbar from '../components/Layout/EnhancedNavbar';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const Playlists = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -53,21 +53,21 @@ const Playlists = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
-      <EnhancedNavbar />
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+      <DarkNavbar />
       
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent mb-2">
               My Playlists
             </h1>
-            <p className="text-gray-600">Organize and manage your video collections</p>
+            <p className="text-gray-600 dark:text-gray-400">Organize and manage your video collections</p>
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all"
           >
             <Plus className="w-5 h-5" />
             Create Playlist
