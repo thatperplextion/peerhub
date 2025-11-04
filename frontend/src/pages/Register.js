@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Mail, Lock, User, GraduationCap, Eye, EyeOff, UserPlus, Building } from 'lucide-react';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -77,25 +78,27 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 py-12 px-4">
-      <div className="max-w-2xl mx-auto bg-white p-10 rounded-2xl shadow-2xl animate-scale-in">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-4 rounded-2xl shadow-lg animate-bounce">
-              <GraduationCap className="w-12 h-12 text-white" />
+    <div className="min-h-screen bg-white dark:bg-[#0d1117] transition-colors duration-300">
+      <DarkNavbar />
+      <div className="flex items-center justify-center py-12 px-4">
+        <div className="max-w-2xl mx-auto bg-white dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 p-10 rounded-2xl shadow-2xl animate-scale-in">
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-4">
+              <div className="bg-gradient-to-br from-emerald-500 to-cyan-600 p-4 rounded-2xl shadow-lg animate-bounce">
+                <GraduationCap className="w-12 h-12 text-white" />
+              </div>
             </div>
+            <h2 className="text-4xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-500 bg-clip-text text-transparent">
+              Join KLH PeerHub
+            </h2>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Create your account and start learning</p>
           </div>
-          <h2 className="text-4xl font-extrabold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Join KLH PeerHub
-          </h2>
-          <p className="mt-2 text-gray-600">Create your account and start learning</p>
-        </div>
 
-        {error && (
-          <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 animate-shake">
-            {error}
-          </div>
-        )}
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl mb-4 animate-shake">
+              {error}
+            </div>
+          )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -251,6 +254,7 @@ const Register = () => {
             </Link>
           </p>
         </form>
+      </div>
       </div>
     </div>
   );
