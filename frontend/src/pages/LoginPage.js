@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Mail, Lock, Eye, EyeOff, LogIn, GraduationCap } from 'lucide-react';
+import DarkNavbar from '../components/Layout/DarkNavbar';
 
 const Login = () => {
   const navigate = useNavigate();
