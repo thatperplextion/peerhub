@@ -1,17 +1,37 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { body, validationResult } = require('express-validator');
 const User = require('../models/userModel');
 const auth = require('../middleware/authMiddleware');
+const { 
+  loginLimiter, 
+  registerLimiter, 
+  strictLimiter,
+  sanitizeInput,
+  detectSuspiciousActivity 
+} = require('../middleware/securityMiddleware');
 const router = express.Router();
 
-// Validation middleware
+// Enhanced validation middleware with stronger rules
 const registerValidation = [
-  body('universityId').trim().notEmpty().withMessage('University ID is required'),
-  body('email').isEmail().withMessage('Valid email is required').normalizeEmail(),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  body('name').trim().notEmpty().withMessage('Name is required'),
+  body('universityId').trim().notEmpty().withMessage('University ID is required')
+    .isLength({ min: 5, max: 20 }).withMessage('University ID must be 5-20 characters'),
+  body('email').isEmail().withMessage('Valid email is required')
+    .normalizeEmail()
+    .custom(value => {
+      if (!value.endsWith('@klh.edu.in')) {
+        throw new Error('Only KLH University emails are allowed');
+      }
+      return true;
+    }),
+  body('password')
+    .isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .withMessage('Password must contain uppercase, lowercase, number and special character'),
+  body('name').trim().notEmpty().withMessage('Name is required')
+    .isLength({ min: 2, max: 100 }).withMessage('Name must be 2-100 characters'),
   body('role').isIn(['student', 'faculty']).withMessage('Invalid role')
 ];
 
@@ -21,7 +41,7 @@ const loginValidation = [
 ];
 
 // Register new user
-router.post('/register', registerValidation, async (req, res) => {
+router.post('/register', registerLimiter, sanitizeInput, detectSuspiciousActivity, registerValidation, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -41,15 +61,11 @@ router.post('/register', registerValidation, async (req, res) => {
       });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create new user
+    // Create new user (password will be hashed by pre-save hook)
     const user = new User({
       universityId,
-      email,
-      password: hashedPassword,
+      email: email.toLowerCase(),
+      password, // Will be hashed by model pre-save hook
       name,
       role,
       department,
@@ -59,21 +75,26 @@ router.post('/register', registerValidation, async (req, res) => {
 
     await user.save();
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { 
-        id: user._id, 
-        email: user.email,
-        role: user.role 
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '30d' }
-    );
+    // Generate tokens
+    const accessToken = auth.generateAccessToken(user._id, user.email, user.role);
+    const refreshToken = auth.generateRefreshToken(user._id, user.email, user.role);
+
+    // Store refresh token
+    user.refreshTokens.push({
+      token: refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      deviceInfo: req.headers['user-agent']
+    });
+    await user.save();
+
+    // Log security event
+    await user.addSecurityEvent('registration', req.ip, req.headers['user-agent']);
 
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         universityId: user.universityId,
