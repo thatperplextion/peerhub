@@ -113,7 +113,7 @@ router.post('/register', registerLimiter, sanitizeInput, detectSuspiciousActivit
 });
 
 // Login user
-router.post('/login', loginValidation, async (req, res) => {
+router.post('/login', loginLimiter, sanitizeInput, detectSuspiciousActivity, loginValidation, async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -122,33 +122,69 @@ router.post('/login', loginValidation, async (req, res) => {
 
     const { email, password } = req.body;
 
-    // Find user
-    const user = await User.findOne({ email });
+    // Find user with password field
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
+    
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    // Check if account is locked
+    if (user.isLocked) {
+      return res.status(423).json({ 
+        message: 'Account is temporarily locked due to multiple failed login attempts. Please try again later.',
+        lockUntil: user.lockUntil
+      });
+    }
+
     // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await user.correctPassword(password, user.password);
+    
     if (!isMatch) {
+      // Increment login attempts
+      await user.incLoginAttempts();
+      
+      // Log failed login attempt
+      await user.addSecurityEvent('failed_login', req.ip, req.headers['user-agent']);
+      
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { 
-        id: user._id, 
-        email: user.email,
-        role: user.role 
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '30d' }
-    );
+    // Reset login attempts on successful login
+    if (user.loginAttempts > 0) {
+      await user.resetLoginAttempts();
+    }
+
+    // Update last login info
+    user.lastLogin = new Date();
+    user.lastLoginIp = req.ip;
+    
+    // Generate tokens
+    const accessToken = auth.generateAccessToken(user._id, user.email, user.role);
+    const refreshToken = auth.generateRefreshToken(user._id, user.email, user.role);
+
+    // Store refresh token
+    user.refreshTokens.push({
+      token: refreshToken,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      deviceInfo: req.headers['user-agent']
+    });
+    
+    // Keep only last 5 refresh tokens
+    if (user.refreshTokens.length > 5) {
+      user.refreshTokens = user.refreshTokens.slice(-5);
+    }
+    
+    await user.save();
+
+    // Log successful login
+    await user.addSecurityEvent('login', req.ip, req.headers['user-agent']);
 
     res.json({
       success: true,
       message: 'Login successful',
-      token,
+      accessToken,
+      refreshToken,
       user: {
         id: user._id,
         universityId: user.universityId,
@@ -158,7 +194,8 @@ router.post('/login', loginValidation, async (req, res) => {
         department: user.department,
         year: user.year,
         avatar: user.avatar,
-        bio: user.bio
+        bio: user.bio,
+        twoFactorEnabled: user.twoFactorEnabled
       }
     });
 
