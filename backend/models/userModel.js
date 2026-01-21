@@ -45,12 +45,11 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   
-  // Account security
+  // Account security (disabled strict lockout)
   loginAttempts: {
     type: Number,
     default: 0
   },
-  lockUntil: Date,
   
   // Two-Factor Authentication
   twoFactorSecret: String,
@@ -91,11 +90,6 @@ const userSchema = new mongoose.Schema({
   }]
 }, {
   timestamps: true
-});
-
-// Virtual for account lock status
-userSchema.virtual('isLocked').get(function() {
-  return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
 // Password hashing
@@ -141,31 +135,16 @@ userSchema.methods.createPasswordResetToken = function() {
   return resetToken;
 };
 
-// Handle login attempts and account lockout
+// Track login attempts (no lockout)
 userSchema.methods.incLoginAttempts = async function() {
-  // If lock expired, restart login attempts
-  if (this.lockUntil && this.lockUntil < Date.now()) {
-    return this.updateOne({
-      $set: { loginAttempts: 1 },
-      $unset: { lockUntil: 1 }
-    });
-  }
-  
   const updates = { $inc: { loginAttempts: 1 } };
-  
-  // Lock account after 5 failed attempts for 2 hours
-  if (this.loginAttempts + 1 >= 5 && !this.isLocked) {
-    updates.$set = { lockUntil: Date.now() + 2 * 60 * 60 * 1000 };
-  }
-  
   return this.updateOne(updates);
 };
 
 // Reset login attempts
 userSchema.methods.resetLoginAttempts = async function() {
   return this.updateOne({
-    $set: { loginAttempts: 0 },
-    $unset: { lockUntil: 1 }
+    $set: { loginAttempts: 0 }
   });
 };
 
