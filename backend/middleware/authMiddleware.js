@@ -34,13 +34,6 @@ const auth = async (req, res, next) => {
       });
     }
 
-    // Check if user is locked
-    if (user.isLocked) {
-      return res.status(423).json({ 
-        message: 'Account is temporarily locked due to multiple failed login attempts. Please try again later.' 
-      });
-    }
-
     // Check if password was changed after token was issued
     if (user.changedPasswordAfter(decoded.iat)) {
       return res.status(401).json({ 

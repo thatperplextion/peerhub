@@ -1,21 +1,21 @@
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 
-// Rate limiting for login attempts
+// Rate limiting for login attempts (relaxed)
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per windowMs
-  message: 'Too many login attempts, please try again after 15 minutes',
+  max: 20, // 20 requests per 15 minutes (relaxed)
+  message: 'Too many login attempts, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: true // Don't count successful logins
 });
 
-// Rate limiting for registration
+// Rate limiting for registration (relaxed)
 const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 registrations per hour per IP
-  message: 'Too many accounts created from this IP, please try again after an hour',
+  max: 10, // 10 registrations per hour per IP (relaxed)
+  message: 'Too many accounts created from this IP, please try again later',
   standardHeaders: true,
   legacyHeaders: false
 });

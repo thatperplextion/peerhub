@@ -7,6 +7,15 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
+const connectDB = require('./config/db');
+const { 
+  apiLimiter, 
+  securityHeaders, 
+  sanitizeInput, 
+  detectSuspiciousActivity,
+  validateTokenFormat 
+} = require('./middleware/securityMiddleware');
+
 const app = express();
 
 // Ensure upload directories exist
@@ -24,21 +33,22 @@ uploadDirs.forEach(dir => {
   }
 });
 
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 1000
-});
-app.use(limiter);
+// Security Middleware (Applied FIRST)
+app.use(securityHeaders);
+app.use(apiLimiter);
+app.use(sanitizeInput);
+app.use(detectSuspiciousActivity);
+app.use(validateTokenFormat);
 
-// Middleware
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
-}));
+// CORS Configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Body Parser Middleware
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -86,7 +96,14 @@ app.get('/api/health', (req, res) => {
     message: 'KLH Peer Learning Backend is running!',
     database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    security: {
+      rateLimiting: 'Enabled',
+      helmet: 'Enabled',
+      cors: 'Configured',
+      inputSanitization: 'Enabled',
+      jwtAuth: 'Enabled'
+    }
   });
 });
 
@@ -97,33 +114,32 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({ 
+    message: 'Route not found',
+    path: req.originalUrl 
+  });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err.stack);
+  
+  res.status(err.status || 500).json({
+    message: err.message || 'Internal server error',
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});
+
 // Database connection with better error handling
 console.log('🔗 Attempting to connect to MongoDB...');
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log('✅ SUCCESS: Connected to MongoDB Atlas!');
-})
-.catch((error) => {
-  console.error('❌ FAILED: MongoDB connection error:');
-  console.error('   Error message:', error.message);
-  console.log('💡 Check your MONGODB_URI in .env file');
-});
-
-// Database connection events
-mongoose.connection.on('connected', () => {
-  console.log('🗄️  MongoDB event: Connected');
-});
-
-mongoose.connection.on('error', (err) => {
-  console.log('❌ MongoDB event: Error -', err.message);
-});
-
-mongoose.connection.on('disconnected', () => {
-  console.log('⚠️  MongoDB event: Disconnected');
+// Use the new connectDB function
+connectDB().then(() => {
+  console.log('✅ Database connection established successfully');
+}).catch((error) => {
+  console.error('❌ Failed to connect to database:', error.message);
 });
 
 const PORT = process.env.PORT || 5000;
