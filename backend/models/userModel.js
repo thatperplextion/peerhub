@@ -1,20 +1,26 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   universityId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    index: true
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    lowercase: true,
+    index: true
   },
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 8,
+    select: false // Don't include password by default
   },
   name: {
     type: String,
@@ -33,6 +39,44 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  
+  // Security enhancements
+  passwordChangedAt: Date,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  
+  // Account security
+  loginAttempts: {
+    type: Number,
+    default: 0
+  },
+  lockUntil: Date,
+  
+  // Two-Factor Authentication
+  twoFactorSecret: String,
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false
+  },
+  
+  // Refresh token for JWT
+  refreshTokens: [{
+    token: String,
+    createdAt: { type: Date, default: Date.now },
+    expiresAt: Date,
+    deviceInfo: String
+  }],
+  
+  // Security logs
+  lastLogin: Date,
+  lastLoginIp: String,
+  securityEvents: [{
+    type: { type: String },
+    timestamp: { type: Date, default: Date.now },
+    ip: String,
+    userAgent: String
+  }],
+  
   uploadedVideos: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Video'
