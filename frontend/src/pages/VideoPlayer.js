@@ -8,6 +8,9 @@ import {
 } from 'lucide-react';
 import DarkNavbar from '../components/Layout/DarkNavbar';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const BACKEND_ORIGIN = API_BASE_URL.replace(/\/?api\/?$/, '');
+
 const VideoPlayer = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -32,7 +35,7 @@ const VideoPlayer = () => {
 
   const fetchVideo = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/videos/${id}`);
+      const response = await axios.get(`/videos/${id}`);
       setVideo(response.data);
       setLoading(false);
     } catch (err) {
@@ -43,7 +46,7 @@ const VideoPlayer = () => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/comments/video/${id}`);
+      const response = await axios.get(`/comments/video/${id}`);
       setComments(response.data);
     } catch (err) {
       console.error('Failed to load comments:', err);
@@ -52,7 +55,7 @@ const VideoPlayer = () => {
 
   const fetchQuestions = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/qa/video/${id}`);
+      const response = await axios.get(`/qa/video/${id}`);
       setQuestions(response.data);
     } catch (err) {
       console.error('Failed to load questions:', err);
@@ -61,7 +64,7 @@ const VideoPlayer = () => {
 
   const fetchRelatedVideos = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/videos?subject=${video?.subject}&limit=5`);
+      const response = await axios.get(`/videos?subject=${video?.subject}&limit=5`);
       setRelatedVideos(response.data.videos.filter(v => v._id !== id));
     } catch (err) {
       console.error('Failed to load related videos:', err);
@@ -76,7 +79,7 @@ const VideoPlayer = () => {
         return;
       }
       await axios.put(
-        `http://localhost:5000/api/videos/${id}/like`,
+        `/videos/${id}/like`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -95,7 +98,7 @@ const VideoPlayer = () => {
         return;
       }
       await axios.post(
-        `http://localhost:5000/api/comments`,
+        `/comments`,
         { videoId: id, text: newComment },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -109,7 +112,7 @@ const VideoPlayer = () => {
   const handleDeleteComment = async (commentId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/comments/${commentId}`, {
+      await axios.delete(`/comments/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchComments();
@@ -127,7 +130,7 @@ const VideoPlayer = () => {
         return;
       }
       await axios.post(
-        `http://localhost:5000/api/qa`,
+        `/qa`,
         { videoId: id, ...newQuestion },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -146,7 +149,7 @@ const VideoPlayer = () => {
         return;
       }
       await axios.post(
-        `http://localhost:5000/api/qa/${questionId}/answer`,
+        `/qa/${questionId}/answer`,
         { text: newAnswer[questionId] },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -221,7 +224,7 @@ const VideoPlayer = () => {
                 controls
                 className="w-full aspect-video"
                 poster={video.thumbnail || 'https://via.placeholder.com/1280x720?text=Video'}
-                src={`http://localhost:5000/api/videos/${id}/stream`}
+                src={`${BACKEND_ORIGIN}/api/videos/${id}/stream`}
               >
                 Your browser does not support the video tag.
               </video>

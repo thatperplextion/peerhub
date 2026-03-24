@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import { Search, Filter, Clock, Eye, ThumbsUp, Play, User, Calendar, Tag, TrendingUp, BookOpen, Download, Share2, Bookmark, Grid3x3, List, BarChart3 } from 'lucide-react';
 import DarkNavbar from '../components/Layout/DarkNavbar';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const BACKEND_ORIGIN = API_BASE_URL.replace(/\/?api\/?$/, '');
+
 const VideosPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [subjectFilter, setSubjectFilter] = useState('');
@@ -22,7 +25,7 @@ const VideosPage = () => {
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/videos', { 
+                const response = await axios.get('/videos', { 
                     params,
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -218,7 +221,7 @@ const VideosPage = () => {
                                     <Link to={`/video/${video._id}`} className="relative md:w-80 h-48 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 flex-shrink-0">
                                         {video.thumbnail ? (
                                             <img
-                                                src={`http://localhost:5000${video.thumbnail}`}
+                                                src={`${BACKEND_ORIGIN}${video.thumbnail}`}
                                                 alt={video.title}
                                                 className="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
                                             />
@@ -316,7 +319,7 @@ const VideosPage = () => {
                                     <div className="relative h-48 bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500">
                                         {video.thumbnail ? (
                                             <img
-                                                src={`http://localhost:5000${video.thumbnail}`}
+                                                src={`${BACKEND_ORIGIN}${video.thumbnail}`}
                                                 alt={video.title}
                                                 className="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
                                             />

@@ -17,7 +17,7 @@ const Home = () => {
             if (subjectFilter) params.subject = subjectFilter;
 
             try {
-                const response = await axios.get('http://localhost:5000/api/videos', { params });
+                const response = await axios.get('/videos', { params });
                 return response.data.videos || [];
             } catch (error) {
                 console.error('Error fetching videos:', error);

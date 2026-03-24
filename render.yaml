@@ -21,3 +21,12 @@
         sync: false
       - key: GEMINI_API_KEY
         sync: false
+
+  - type: static
+    name: klh-peer-learning-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false

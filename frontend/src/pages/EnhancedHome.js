@@ -22,7 +22,7 @@ const EnhancedHome = () => {
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:5000/api/videos', { 
+                const response = await axios.get('/videos', { 
                     params,
                     headers: {
                         Authorization: `Bearer ${token}`

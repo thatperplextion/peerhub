@@ -100,7 +100,7 @@ const UploadPage = () => {
       setError('');
       const token = localStorage.getItem('token');
       
-      await axios.post('http://localhost:5000/api/videos/upload', uploadData, {
+      await axios.post('/videos/upload', uploadData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
